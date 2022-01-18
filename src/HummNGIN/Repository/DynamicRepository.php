@@ -25,10 +25,17 @@ class DynamicRepository extends BaseRepository
         $this->pdo = $this->database->connect();
     }
 
+    public static function getColumnNames($dict)
+    {
+        $keys = [];
+        foreach ($dict as $key => $value) {
+            $keys[] = $key;
+        }
+        return $keys;
+    }
 
     public function getOne(string $value_name, string $value): ?DynamicModel
     {
-
 
         $stmt = $this->pdo->prepare(
             'SELECT * FROM ' . $this->table_name . ' WHERE ' . $value_name . ' = :' . $value_name . ';'
@@ -110,6 +117,24 @@ class DynamicRepository extends BaseRepository
     public function tableName(): string
     {
         return $this->table_name;
+    }
+
+    public function removeAt(int $id)
+    {
+        if ($id <= 0) {
+            throw new Error("ID cannot be less or equal to 0");
+        }
+
+        $sql = "DELETE FROM $this->table_name WHERE id=?;";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        if (!$stmt->execute([$id]))
+            throw new Error(json_encode($stmt->errorInfo()));
+
+        if ($stmt->rowCount() == 0) {
+            throw new Error("Object with `id` == $id  was not found in " . $this->tableName() . ".");
+        }
     }
 
     public function join(string $table_name, string $col1_name, $col2_name): ?DynamicModel
@@ -356,21 +381,20 @@ class DynamicRepository extends BaseRepository
         return $model_array;
     }
 
-    public function insertOne(mixed $data_dict)
+    public function insertOne(mixed $data_dict): bool|string
     {
         if (count($data_dict) <= 0) {
             throw new Error("Cannot insert empty object");
         }
 
-        $values = $this->ConvertSet($data_dict);
+        $column_helper = implode(',', array_keys($data_dict));
+        $vars_helper = implode(',', array_fill(0, count($data_dict), '?'));
 
-        $sql = "INSERT INTO $this->table_name VALUES $values;";
+        $sql = "INSERT INTO $this->table_name ( $column_helper ) VALUES ( $vars_helper );";
 
         $stmt = $this->pdo->prepare($sql);
 
-        $stmt = $this->BindParams(['SET' => $values], $stmt);
-
-        if (!$stmt->execute())
+        if (!$stmt->execute(array_values($data_dict)))
             throw new Error(json_encode($stmt->errorInfo()));
 
         if ($stmt->rowCount() == 0) {
@@ -378,6 +402,5 @@ class DynamicRepository extends BaseRepository
         }
 
         return $this->pdo->lastInsertId();
-
     }
 }

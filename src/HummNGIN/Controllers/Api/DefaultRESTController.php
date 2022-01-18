@@ -3,12 +3,12 @@
 namespace HummNGIN\Controllers\Api;
 
 use Error;
-use JetBrains\PhpStorm\Pure;
 use HummNGIN\Controllers\DefaultController;
 use HummNGIN\Core\Http\JSONResponse;
 use HummNGIN\Core\Http\Request;
 use HummNGIN\Core\Http\Response;
 use HummNGIN\Repository\DynamicRepository;
+use JetBrains\PhpStorm\Pure;
 
 class DefaultRESTController extends DefaultController implements IRESTController
 {
@@ -48,6 +48,20 @@ class DefaultRESTController extends DefaultController implements IRESTController
         }
     }
 
+    public function post(Request $request): Response
+    {
+        try {
+
+            $data = $request->JSON()->getContent();
+
+            $this->mainRepository->insertOne($data);
+
+            return new JSONResponse(json_encode(["ok" => "done"]), Response::HTTP_OK);
+        } catch (Error $e) {
+            return new JSONResponse(json_encode(["error" => $e->getMessage()]), Response::HTTP_NOT_ACCEPTABLE);
+        }
+    }
+
     public function put(Request $request): Response
     {
         try {
@@ -65,24 +79,18 @@ class DefaultRESTController extends DefaultController implements IRESTController
         }
     }
 
-    public function post(Request $request): Response
+    public function delete(Request $request): Response
     {
         try {
 
-            $data = $request->JSON()->getContent();
+            $id = $request->JSON()->getContent()['id'];
 
-            $this->mainRepository->insertOne($data);
+            $this->mainRepository->removeAt($id);
 
             return new JSONResponse(json_encode(["ok" => "done"]), Response::HTTP_OK);
         } catch (Error $e) {
             return new JSONResponse(json_encode(["error" => $e->getMessage()]), Response::HTTP_NOT_ACCEPTABLE);
         }
-    }
-
-    public function delete(Request $request): Response
-    {
-        // TODO: Implement delete() method.
-        throw new \Error("Not implemented", 404);
     }
 
 }

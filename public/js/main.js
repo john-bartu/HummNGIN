@@ -141,7 +141,35 @@ async function ParseAdminForm(e) {
 
         if (response.status !== 200) {
             alert(response.json())
-        }else{
+        } else {
+            location.reload();
+        }
+
+        return await response.json();
+    } catch (e) {
+        return {error: e}
+    }
+}
+
+async function DeleteAdminAction(api, object_id) {
+
+    let method = 'DELETE';
+    let action = api;
+
+    const data = {id: object_id}
+
+    const requestOptions = {
+        method: method,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    }
+
+    try {
+        const response = await fetch(action, requestOptions);
+
+        if (response.status !== 200) {
+            alert(response.json())
+        } else {
             location.reload();
         }
 

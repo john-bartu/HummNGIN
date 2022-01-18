@@ -23,7 +23,7 @@ class AdminPageController extends AppController
     public function index(): int|Response|null
     {
         $pages = $this->mainRepository->getAll("name");
-        return $this->render_layout('AdminPageIndex', ['pages' => $pages]);
+        return $this->render_layout('AdminPageIndex', ['pages' => $pages, 'url' => "/api/v1/page"]);
     }
 
     public function select(int $id): int|Response|null

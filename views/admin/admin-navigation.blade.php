@@ -19,7 +19,10 @@ use HummNGIN\Core\Kernel;
         </p>
 
         <a class="nav-item" href="<?=Kernel::generateUrl("admin-page-list")?>">
-            <p class="nav-text">Strony</p>
+            <p class="nav-text">Lista Stron</p>
+        </a>
+        <a class="nav-item" href="<?=Kernel::generateUrl("admin-page-post")?>">
+            <p class="nav-text">Dodaj Stronę</p>
         </a>
 
 
