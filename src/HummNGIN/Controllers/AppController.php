@@ -5,6 +5,7 @@ namespace HummNGIN\Controllers;
 use eftec\bladeone\BladeOne;
 use Error;
 use Exception;
+use HummNGIN\Core\Http\RedirectResponse;
 use HummNGIN\Core\Http\Response;
 use HummNGIN\Util\Debug;
 
@@ -15,6 +16,16 @@ class AppController
     public function __construct()
     {
         $this->request = $_SERVER['REQUEST_METHOD'];
+    }
+
+    protected function render_layout(string $template = null, array $variables = []): ?Response
+    {
+        try {
+            return new Response($this->only_render($template, $variables));
+        } catch (Exception $e) {
+            $this->error(new Error($e->getMessage(), 1002));
+            return null;
+        }
     }
 
     public function only_render(string $template = null, array $variables = []): ?string
@@ -37,19 +48,7 @@ class AppController
 
     function error(Error $error): ?Response
     {
-        $response = $this->render_layout('error', ['error_object' => $error]);
-        $response->setStatusCode($error->getCode() <= 0 ? 404 : $error->getCode());
-        return $response;
-    }
-
-    protected function render_layout(string $template = null, array $variables = []): ?Response
-    {
-        try {
-            return new Response($this->only_render($template, $variables));
-        } catch (Exception $e) {
-            $this->error(new Error($e->getMessage(), 1002));
-            return null;
-        }
+        return new RedirectResponse("/", $error->getCode() <= 0 ? 404 : $error->getCode());
     }
 
     protected function isGet(): bool
