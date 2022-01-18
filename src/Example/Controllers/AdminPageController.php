@@ -2,27 +2,23 @@
 
 namespace Example\Controllers;
 
-use HummNGIN\Controllers\AppController;
 use HummNGIN\Core\Http\Request;
 use HummNGIN\Core\Http\Response;
-use HummNGIN\Repository\DynamicRepository;
 use HummNGIN\Util\Forms\Form;
 use HummNGIN\Util\Forms\FormBuilder;
 
 class AdminPageController extends DefaultController
 {
 
-
-
-    public function index(): int|Response|null
+    public function index(): ?Response
     {
-        $pages = $this->mainRepository->getAll("name");
+        $pages = $this->pageRepository->getAll("name");
         return $this->render_layout('AdminPageIndex', ['pages' => $pages, 'url' => "/api/v1/page"]);
     }
 
-    public function select(int $id): int|Response|null
+    public function select(int $id): ?Response
     {
-        $page = $this->mainRepository->getOne('id', $id);
+        $page = $this->pageRepository->getOne('id', $id);
 
         $form = new FormBuilder("/api/v1/page", Request::METHOD_PUT);
         $form->AddField("id", Form::FieldNumber, $page->get('id'));
@@ -32,7 +28,7 @@ class AdminPageController extends DefaultController
         return $this->render_layout('AdminFormEdit', $form->GetForm()->Serialize());
     }
 
-    public function insert(): int|Response|null
+    public function insert(): ?Response
     {
 
         $form = new FormBuilder("/api/v1/page", Request::METHOD_POST);

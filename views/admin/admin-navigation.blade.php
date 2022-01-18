@@ -3,7 +3,7 @@ use HummNGIN\Core\Kernel;
 ?>
 @section('navigation')
     <nav id="nav-menu">
-        <a href="<?=Kernel::generateUrl("admin-home")?>">
+        <a href="<?=Kernel::generateUrl("home-page")?>">
             <div class="site-title">
                 <img class="logo" src="/historia-favicon.png" alt="logo">
                 <span class="title-text">HummNGIN</span>

@@ -43,9 +43,11 @@
                     {{\HummNGIN\Core\Auth::getName()}}
                 </div>
                 <div class="sub-menu">
-                    <div class="sub-menu-item">
-                        Panel użytkownika
-                    </div>
+                    <a href="/admin">
+                        <div class="sub-menu-item">
+                            Panel Administratora
+                        </div>
+                    </a>
 
                     <a href="/logout">
                         <div class="sub-menu-item">
