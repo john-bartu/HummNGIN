@@ -383,6 +383,14 @@ article {
   }
 }
 
+pre {
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
 .page-list {
   h1 {
     margin-left: 1em;
@@ -423,7 +431,7 @@ article {
 }
 
 .page-box {
-  padding: 0.75em 1em;
+  padding: 0.75em 1em 2em 1em;
   background-color: white;
   margin-bottom: 0.75em;
   border-style: solid;
@@ -439,53 +447,6 @@ article {
 
   .content {
     padding: 0 1em 0 1em;
-  }
-
-  .answers {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.75em;
-    align-items: flex-start;
-    justify-content: left;
-
-    @media (max-width: $bp-phone) {
-      justify-content: center;
-    }
-
-    &.answered {
-      .answer:not(.answer-correct) {
-        background-color: #626262;
-        color: white;
-        pointer-events: none;
-      }
-    }
-
-    .answer {
-      transition: all 200ms ease-in-out;
-      cursor: pointer;
-      margin: 0.25em 0;
-      border-style: solid;
-      border-width: 1px;
-      border-color: rgb(205, 206, 211);
-      padding: 1em 2em;
-
-      &:hover {
-        border-radius: 16px;
-      }
-
-      &.answer-correct {
-        background-color: #16a44c;
-        color: white;
-      }
-
-      &.answer-wrong {
-        background-color: #e74c3c;
-        color: white;
-      }
-    }
-
-
   }
 
   @media (max-width: $bp-phone) {

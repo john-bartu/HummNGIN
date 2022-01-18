@@ -9,16 +9,10 @@ use HummNGIN\Repository\DynamicRepository;
 use HummNGIN\Util\Forms\Form;
 use HummNGIN\Util\Forms\FormBuilder;
 
-class AdminPageController extends AppController
+class AdminPageController extends DefaultController
 {
 
-    private DynamicRepository $mainRepository;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->mainRepository = new DynamicRepository('hb_pages');
-    }
 
     public function index(): int|Response|null
     {

@@ -4,20 +4,22 @@ require "../vendor/autoload.php";
 
 use Example\Controllers\AdminController;
 use Example\Controllers\AdminPageController;
+use Example\Controllers\DefaultController;
+use Example\Controllers\PageController;
 use Example\Controllers\PageREST;
 use HummNGIN\Controllers\DebugController;
-use HummNGIN\Controllers\DefaultController;
 use HummNGIN\Controllers\SecurityController;
 use HummNGIN\Core\Http\Request;
 use HummNGIN\Core\Kernel;
 use HummNGIN\Core\Router\Router;
 use HummNGIN\Core\Session;
 use HummNGIN\Guard\AdminGuard;
+use HummNGIN\Guard\AuthGuard;
 use HummNGIN\Util\Debug;
 
 include_once "../config.php";
 
-Router::any('home_page', '/', function () {
+Router::any('home-page', '/', function () {
     return (new DefaultController())->index();
 });
 
@@ -36,6 +38,9 @@ Router::anyWithClass('admin-page-list', '/admin/strony', AdminPageController::cl
 Router::anyWithClass('admin-page-post', '/admin/strona', AdminPageController::class, 'insert')->Guard(AdminGuard::class);
 Router::anyWithClass('admin-page-edit', '/admin/strona/{id}', AdminPageController::class, 'select')->Guard(AdminGuard::class);
 Router::anyWithClass('api-page', '/api/v1/page', PageREST::class, 'handle')->Guard(AdminGuard::class);
+
+Router::anyWithClass('page-show', '/strona/{id}', PageController::class, 'get')->Guard(AuthGuard::class);
+Router::anyWithClass('page-index', '/strony', PageController::class, 'index')->Guard(AuthGuard::class);
 
 Router::anyWithClass('admin-home', '/admin', AdminController::class, 'index')->Guard(AdminGuard::class);
 
