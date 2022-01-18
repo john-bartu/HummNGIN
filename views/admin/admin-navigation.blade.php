@@ -5,7 +5,7 @@ use HummNGIN\Core\Kernel;
     <nav id="nav-menu">
         <a href="<?=Kernel::generateUrl("home-page")?>">
             <div class="site-title">
-                <img class="logo" src="/historia-favicon.png" alt="logo">
+                <img class="logo" src="/logo.png" alt="logo">
                 <span class="title-text">HummNGIN</span>
             </div>
         </a>
