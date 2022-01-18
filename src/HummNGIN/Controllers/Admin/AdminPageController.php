@@ -17,7 +17,7 @@ class AdminPageController extends AppController
     public function __construct()
     {
         parent::__construct();
-        $this->mainRepository = new DynamicRepository('his_pages');
+        $this->mainRepository = new DynamicRepository('hb_pages');
     }
 
     public function index(): int|Response|null
