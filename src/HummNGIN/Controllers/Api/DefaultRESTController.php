@@ -67,8 +67,16 @@ class DefaultRESTController extends DefaultController implements IRESTController
 
     public function post(Request $request): Response
     {
-        // TODO: Implement post() method.
-        throw new \Error("Not implemented", 404);
+        try {
+
+            $data = $request->JSON()->getContent();
+
+            $this->mainRepository->insertOne($data);
+
+            return new JSONResponse(json_encode(["ok" => "done"]), Response::HTTP_OK);
+        } catch (Error $e) {
+            return new JSONResponse(json_encode(["error" => $e->getMessage()]), Response::HTTP_NOT_ACCEPTABLE);
+        }
     }
 
     public function delete(Request $request): Response

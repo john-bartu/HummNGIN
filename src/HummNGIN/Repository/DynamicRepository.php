@@ -3,10 +3,10 @@
 namespace HummNGIN\Repository;
 
 use Error;
-use PDO;
-use PDOStatement;
 use HummNGIN\Models\DynamicModel;
 use HummNGIN\Util\Debug;
+use PDO;
+use PDOStatement;
 
 class DynamicRepository extends BaseRepository
 {
@@ -354,5 +354,30 @@ class DynamicRepository extends BaseRepository
         }
         Debug::Database(['sql' => $stmt->queryString, 'response' => json_encode($debug_rows, JSON_PRETTY_PRINT)]);
         return $model_array;
+    }
+
+    public function insertOne(mixed $data_dict)
+    {
+        if (count($data_dict) <= 0) {
+            throw new Error("Cannot insert empty object");
+        }
+
+        $values = $this->ConvertSet($data_dict);
+
+        $sql = "INSERT INTO $this->table_name VALUES $values;";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt = $this->BindParams(['SET' => $values], $stmt);
+
+        if (!$stmt->execute())
+            throw new Error(json_encode($stmt->errorInfo()));
+
+        if ($stmt->rowCount() == 0) {
+            throw new Error("Nothing inserted.");
+        }
+
+        return $this->pdo->lastInsertId();
+
     }
 }

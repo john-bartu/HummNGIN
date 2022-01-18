@@ -33,6 +33,7 @@ Router::any('logout', '/logout', function () {
 });
 
 Router::anyWithClass('admin-page-list', '/admin/strony', AdminPageController::class, 'index')->Guard(AdminGuard::class);
+Router::anyWithClass('admin-page-edit', '/admin/strona', AdminPageController::class, 'insert')->Guard(AdminGuard::class);
 Router::anyWithClass('admin-page-edit', '/admin/strona/{id}', AdminPageController::class, 'select')->Guard(AdminGuard::class);
 Router::anyWithClass('api-page', '/api/v1/page', PageREST::class, 'handle')->Guard(AdminGuard::class);
 

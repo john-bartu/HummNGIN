@@ -36,6 +36,15 @@ class AdminPageController extends AppController
         $form->AddField("document", Form::FieldTextArea, $page->get('document'));
 
         return $this->render_layout('AdminFormEdit', $form->GetForm()->Serialize());
+    }
 
+    public function insert(): int|Response|null
+    {
+
+        $form = new FormBuilder("/api/v1/page", Request::METHOD_POST);
+        $form->AddField("name", Form::FieldText);
+        $form->AddField("document", Form::FieldTextArea);
+
+        return $this->render_layout('AdminFormEdit', $form->GetForm()->Serialize());
     }
 }
