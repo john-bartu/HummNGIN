@@ -4,5 +4,5 @@ namespace HummNGIN\Guard;
 
 class AdminGuard extends AuthenticateGuard
 {
-    static int $roleId = Role::ADMIN;
+    public static int $roleId = Role::ADMIN;
 }

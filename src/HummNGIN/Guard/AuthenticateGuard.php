@@ -15,7 +15,7 @@ class AuthenticateGuard extends AuthGuard
         if (!parent::hasAccess()) {
             return false;
         }
-        return self::hasUserRole(self::$roleId);
+        return self::hasUserRole(static::$roleId);
     }
 
     public static function hasUserRole(int $role): bool

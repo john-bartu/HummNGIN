@@ -3,9 +3,9 @@
 namespace HummNGIN\Core\Endpoint;
 
 use Exception;
-use InvalidArgumentException;
 use HummNGIN\Core\Http\Request;
 use HummNGIN\Guard\IGuard;
+use InvalidArgumentException;
 use ReflectionClass;
 
 
@@ -93,9 +93,9 @@ class ClassEndpoint implements IEndpoint
         }
 
         if (isset($this->middleware)) {
+            /** @var IGuard $ware */
             $ware = new $this->middleware;
-            if (!$ware->auth()) {
-                /** @var IGuard $ware */
+            if (!$ware->hasAccess()) {
                 return $ware->noAccessResponse();
             }
         }

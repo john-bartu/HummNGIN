@@ -79,9 +79,10 @@ class CallbackEndpoint implements IEndpoint
     public function handle(Request|null $request)
     {
         if (isset($this->middleware)) {
+            /** @var IGuard $ware */
             $ware = new $this->middleware;
-            if (!$ware->auth()) {
-                /** @var IGuard $ware */
+            if (!$ware->hasAccess()) {
+
                 return $ware->noAccessResponse();
             }
         }
