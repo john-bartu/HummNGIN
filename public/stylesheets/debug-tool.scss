@@ -1,0 +1,70 @@
+.debug-bar {
+  order: 99;
+  align-self: flex-end;
+  width: 100%;
+  color: white;
+  background-color: #2f2f2f;
+  bottom: 0;
+  left: 0;
+  padding: 4px;
+  font-size: 12px;
+
+  .container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: right;
+    gap: 8px;
+
+    div {
+      border-radius: 4px;
+      padding: 2px 8px;
+      background: #626262;
+    }
+
+    .db_call {
+      cursor: pointer;
+
+      .data {
+        //pointer-events: bounding-box;/
+        border: 1px solid $theme-color;
+        background: white;
+        color: black;
+        overflow-y: auto;
+        display: none;
+        position: absolute;
+        width: 70%;
+        top: 0;
+        height: 75vh;
+        border-radius: 32px;
+        left: 15%;
+
+        .sql{
+          text-align: center;
+          color:white;
+          font-size: 2em;
+        }
+      }
+
+      &.selected {
+        .data {
+          display: block;
+        }
+      }
+    }
+  }
+
+
+}
+
+.html {
+  padding-bottom: 50px;
+}
+
+@media (max-width: $bp-phone) {
+  .debug-bar {
+    order: -99;
+  }
+}

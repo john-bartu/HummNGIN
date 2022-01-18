@@ -1,0 +1,7 @@
+/config.php
+/lib/*
+/views/cache/*
+*.map
+/composer.lock
+/PAI-powtorki-online.zip
+/vendor
