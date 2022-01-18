@@ -3,8 +3,9 @@
 namespace HummNGIN\Core\Endpoint;
 
 use Exception;
-use InvalidArgumentException;
+use HummNGIN\Core\Http\Request;
 use HummNGIN\Guard\IGuard;
+use InvalidArgumentException;
 
 
 class RedirectEndpoint implements IEndpoint
@@ -74,13 +75,13 @@ class RedirectEndpoint implements IEndpoint
     /**
      * @throws Exception
      */
-    public function handle()
+    public function handle(Request|null $request)
     {
         if (isset($this->middleware)) {
             $ware = new $this->middleware;
             if (!$ware->auth()) {
                 /** @var IGuard $ware */
-                $ware->UnauthorizedResponse();
+                return $ware->noAccessResponse();
             }
         }
 

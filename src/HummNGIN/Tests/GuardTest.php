@@ -20,7 +20,7 @@ class GuardTest extends TestCase
     {
         Session::start();
         Auth::login(new User(0, "test@domain.pl", "pass", "test", Role::USER));
-        $this->assertEquals(true, AuthGuard::Auth());
+        $this->assertEquals(true, AuthGuard::hasAccess());
         Session::Regenerate();
     }
 
@@ -32,7 +32,7 @@ class GuardTest extends TestCase
     {
         Session::start();
         Auth::login(new User(0, "test@domain.pl", "pass", "test", Role::ADMIN));
-        $this->assertEquals(true, AuthGuard::Auth());
+        $this->assertEquals(true, AuthGuard::hasAccess());
         Session::Regenerate();
     }
 
@@ -45,7 +45,7 @@ class GuardTest extends TestCase
     {
         Session::start();
         Auth::login(new User(0, "test@domain.pl", "pass", "test", Role::USER));
-        $this->assertEquals(false, AdminGuard::Auth());
+        $this->assertEquals(false, AdminGuard::hasAccess());
         Session::Regenerate();
     }
 
@@ -57,7 +57,7 @@ class GuardTest extends TestCase
     {
         Session::start();
         Auth::login(new User(0, "test@domain.pl", "pass", "test", Role::ADMIN));
-        $this->assertEquals(true, AdminGuard::Auth());
+        $this->assertEquals(true, AdminGuard::hasAccess());
         Session::Regenerate();
     }
 }

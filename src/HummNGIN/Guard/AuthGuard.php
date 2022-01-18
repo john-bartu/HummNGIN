@@ -2,19 +2,17 @@
 
 namespace HummNGIN\Guard;
 
-
 use HummNGIN\Core\Auth;
 use HummNGIN\Core\Http\RedirectResponse;
-use HummNGIN\Core\Router\Router;
 
 class AuthGuard implements IGuard
 {
-    public static function Auth(): bool
+    public static function hasAccess(): bool
     {
         return Auth::check();
     }
 
-    public static function UnauthorizedResponse(): RedirectResponse
+    public static function noAccessResponse(): RedirectResponse
     {
         return new RedirectResponse("/login");
     }

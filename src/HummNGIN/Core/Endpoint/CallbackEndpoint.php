@@ -82,7 +82,7 @@ class CallbackEndpoint implements IEndpoint
             $ware = new $this->middleware;
             if (!$ware->auth()) {
                 /** @var IGuard $ware */
-                return $ware->UnauthorizedResponse();
+                return $ware->noAccessResponse();
             }
         }
 

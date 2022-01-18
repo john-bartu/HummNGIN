@@ -17,6 +17,41 @@ class AppController
         $this->request = $_SERVER['REQUEST_METHOD'];
     }
 
+    public function only_render(string $template = null, array $variables = []): ?string
+    {
+        Debug::Debug("Template", $template);
+        Debug::Debug("Controller", get_class($this));
+
+        $views = ['../views', '../views/debug', '../views/admin'];
+        $cache = '../views/cache';
+
+        $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
+
+        try {
+            return $blade->run($template, $variables);
+        } catch (Exception $e) {
+            $this->error(new Error($e->getMessage(), 1002));
+            return null;
+        }
+    }
+
+    function error(Error $error): ?Response
+    {
+        $response = $this->render_layout('error', ['error_object' => $error]);
+        $response->setStatusCode($error->getCode() <= 0 ? 404 : $error->getCode());
+        return $response;
+    }
+
+    protected function render_layout(string $template = null, array $variables = []): ?Response
+    {
+        try {
+            return new Response($this->only_render($template, $variables));
+        } catch (Exception $e) {
+            $this->error(new Error($e->getMessage(), 1002));
+            return null;
+        }
+    }
+
     protected function isGet(): bool
     {
         return $this->request === 'GET';
@@ -26,7 +61,6 @@ class AppController
     {
         return $this->request === 'POST';
     }
-
 
     protected function render(string $template = null, array $variables = []): ?Response
     {
@@ -42,32 +76,5 @@ class AppController
         } else {
             return $this->error(new Error("View not found '" . $template . "'", 1001));
         }
-    }
-
-    function error(Error $error): ?Response
-    {
-        $response = $this->render_layout('error', ['error_object' => $error]);
-        $response->setStatusCode($error->getCode() <= 0 ? 404 : $error->getCode());
-        return $response;
-    }
-
-    protected function render_layout(string $template = null, array $variables = []): ?Response
-    {
-        Debug::Debug("Template", $template);
-        Debug::Debug("Controller", get_class($this));
-
-        $views = ['../views', '../views/debug', '../views/admin'];
-        $cache = '../views/cache';
-
-        $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
-
-        try {
-
-            return new Response($blade->run($template, $variables));
-        } catch (Exception $e) {
-            $this->error(new Error($e->getMessage(), 1002));
-            return null;
-        }
-
     }
 }

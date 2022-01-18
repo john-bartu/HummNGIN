@@ -6,8 +6,16 @@ use HummNGIN\Core\Http\RedirectResponse;
 
 interface IGuard
 {
-    public static function Auth();
+    /**
+     * Returns if user has access to bypass this guard
+     * @return bool
+     */
+    public static function hasAccess(): bool;
 
-    public static function UnauthorizedResponse(): RedirectResponse;
+    /**
+     * Default redirect response which can be used if user has no access
+     * @return RedirectResponse
+     */
+    public static function noAccessResponse(): RedirectResponse;
 
 }
