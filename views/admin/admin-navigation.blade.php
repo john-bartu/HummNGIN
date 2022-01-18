@@ -12,20 +12,20 @@ use HummNGIN\Core\Kernel;
 
         <a class="nav-item" href="<?=Kernel::generateUrl("admin-home")?>">
             <span class="nav-item-fold">&nbsp;</span>
-            <p class="nav-text">Panel Administratora</p>
+            <p class="nav-text">Dashboard</p>
         </a>
 
         <p class="nav-item header">
-            Manadżer:
+            Manage:
         </p>
 
         <a class="nav-item" href="<?=Kernel::generateUrl("admin-page-list")?>">
             <span class="nav-item-fold">&nbsp;</span>
-            <p class="nav-text">Lista Stron</p>
+            <p class="nav-text">Pages</p>
         </a>
         <a class="nav-item" href="<?=Kernel::generateUrl("admin-page-post")?>">
             <span class="nav-item-fold">&nbsp;</span>
-            <p class="nav-text">Dodaj Stronę</p>
+            <p class="nav-text">Add Page</p>
         </a>
 
 

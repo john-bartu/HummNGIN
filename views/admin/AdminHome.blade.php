@@ -4,6 +4,6 @@
 
 @section('article')
 
-    <h1>Panel Administratora</h1>
+    <h1>Admin Dashboard</h1>
 
 @endsection

@@ -47,7 +47,7 @@
             @endforeach
 
             <div class="form-field">
-                <button class="form-input" type="submit">Potwierdz</button>
+                <button class="form-input" type="submit">Submit</button>
             </div>
         </form>
 

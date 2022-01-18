@@ -5,10 +5,18 @@ use HummNGIN\Core\Kernel;
 
 @section('article')
 
-    <h1>Strona Główna</h1>
+    <h1>Home Page</h1>
+    <p>
+        Curabitur eu dictum lorem. Morbi aliquet, nulla aliquam consectetur hendrerit, urna felis auctor dolor, a
+        lacinia nunc erat id augue. Ut aliquam quam vel tellus dictum venenatis. Praesent eget velit tincidunt arcu
+        volutpat commodo et et leo. Praesent in euismod arcu. Ut in venenatis diam. Morbi maximus lectus non nunc
+        placerat dapibus. Nullam faucibus tempus ipsum, in pretium metus placerat ac. Donec leo sapien, viverra ac leo
+        vitae, volutpat consequat ex. Phasellus lobortis vehicula massa vel cursus. Cras pulvinar dui et elit varius, et
+        pulvinar elit eleifend. Curabitur dignissim semper lacus. Nam vel mi metus. Cras aliquet urna purus, non rutrum
+        sapien mollis quis.
+    </p>
 
-
-    <h2>Ostatnie strony</h2>
+    <h2>Last pages</h2>
     <div class="page-list">
         @for($i=0; $i<2 ; $i++)
             <div class="page-box">

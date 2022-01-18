@@ -34,15 +34,19 @@ Router::any('logout', '/logout', function () {
     return (new SecurityController())->logout();
 });
 
-Router::anyWithClass('admin-page-list', '/admin/strony', AdminPageController::class, 'index')->Guard(AdminGuard::class);
-Router::anyWithClass('admin-page-post', '/admin/strona', AdminPageController::class, 'insert')->Guard(AdminGuard::class);
-Router::anyWithClass('admin-page-edit', '/admin/strona/{id}', AdminPageController::class, 'select')->Guard(AdminGuard::class);
-Router::anyWithClass('api-page', '/api/v1/page', PageREST::class, 'handle')->Guard(AdminGuard::class);
 
-Router::anyWithClass('page-show', '/strona/{id}', PageController::class, 'get')->Guard(AuthGuard::class);
-Router::anyWithClass('page-index', '/strony', PageController::class, 'index')->Guard(AuthGuard::class);
+Router::anyWithClass('page-index', '/pages', PageController::class, 'index');
+Router::anyWithClass('page-show', '/page/{id}', PageController::class, 'get');
+
 
 Router::anyWithClass('admin-home', '/admin', AdminController::class, 'index')->Guard(AdminGuard::class);
+Router::anyWithClass('admin-page-list', '/admin/pages', AdminPageController::class, 'index')->Guard(AdminGuard::class);
+Router::anyWithClass('admin-page-post', '/admin/page', AdminPageController::class, 'insert')->Guard(AdminGuard::class);
+Router::anyWithClass('admin-page-edit', '/admin/page/{id}', AdminPageController::class, 'select')->Guard(AdminGuard::class);
+
+Router::anyWithClass('api-page', '/api/v1/page', PageREST::class, 'handle')->Guard(AdminGuard::class);
+
+
 
 
 Router::any('debug', '/debug', function () {

@@ -15,12 +15,12 @@ use HummNGIN\Core\Kernel;
 
         <a class="nav-item" href="<?=Kernel::generateUrl("home-page")?>">
             <span class="nav-item-fold">&nbsp;</span>
-            <p class="nav-text">Strona główna</p>
+            <p class="nav-text">Home</p>
         </a>
 
         <a class="nav-item" href="<?=Kernel::generateUrl("page-index")?>">
             <span class="nav-item-fold">&nbsp;</span>
-            <p class="nav-text">Lista stron</p>
+            <p class="nav-text">Pages</p>
         </a>
 
     </nav>

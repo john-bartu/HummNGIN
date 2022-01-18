@@ -45,13 +45,13 @@
                 <div class="sub-menu">
                     <a href="/admin">
                         <div class="sub-menu-item">
-                            Panel Administratora
+                            Dashboard
                         </div>
                     </a>
 
                     <a href="/logout">
                         <div class="sub-menu-item">
-                            Wyloguj
+                            Logout
                         </div>
                     </a>
                 </div>

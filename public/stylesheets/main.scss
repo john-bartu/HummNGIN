@@ -384,11 +384,11 @@ article {
 }
 
 pre {
-  white-space: pre-wrap;       /* Since CSS 2.1 */
-  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-  white-space: -pre-wrap;      /* Opera 4-6 */
-  white-space: -o-pre-wrap;    /* Opera 7 */
-  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
 
 .page-list {
@@ -424,9 +424,20 @@ pre {
 
 .button-default {
 
+  background-color: $theme-lighter-color; /* Green */
+  border: none;
+  color: white;
+  padding: .6em 2em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 200ms ease-in-out;
+line-height: 1em;
 
   &:hover {
     cursor: pointer;
+    background-color: $theme-color;
+    color: white;
   }
 }
 
