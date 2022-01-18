@@ -4,7 +4,7 @@
 
 
     <div class="heading-logo">
-        <img src="/logo.png" alt="Powtórki Online Logo">
+        <img src="/logo.png" alt="HummNGIN Logo">
     </div>
 
     <div class="page-login">
