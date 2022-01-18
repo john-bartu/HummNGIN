@@ -3,15 +3,17 @@
 namespace HummNGIN\Controllers\Api;
 
 use Error;
-use HummNGIN\Controllers\DefaultController;
+use HummNGIN\Controllers\AppController;
 use HummNGIN\Core\Http\JSONResponse;
 use HummNGIN\Core\Http\Request;
 use HummNGIN\Core\Http\Response;
+use HummNGIN\Core\Kernel;
 use HummNGIN\Repository\DynamicRepository;
 use JetBrains\PhpStorm\Pure;
 
-class DefaultRESTController extends DefaultController implements IRESTController
+class DefaultRESTController extends AppController implements IRESTController
 {
+    static string $crud_admin_route = "";
     private DynamicRepository $mainRepository;
 
     /**
@@ -54,9 +56,9 @@ class DefaultRESTController extends DefaultController implements IRESTController
 
             $data = $request->JSON()->getContent();
 
-            $this->mainRepository->insertOne($data);
+            $id = $this->mainRepository->insertOne($data);
 
-            return new JSONResponse(json_encode(["ok" => "done"]), Response::HTTP_OK);
+            return new JSONResponse(json_encode(["ok" => "done", "id" => $id, 'item_link' => Kernel::generateUrl(static::$crud_admin_route, ["id" => $id])]), Response::HTTP_OK);
         } catch (Error $e) {
             return new JSONResponse(json_encode(["error" => $e->getMessage()]), Response::HTTP_NOT_ACCEPTABLE);
         }

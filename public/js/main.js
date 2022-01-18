@@ -139,11 +139,19 @@ async function ParseAdminForm(e) {
     try {
         const response = await fetch(action, requestOptions);
 
+
+        const jsonResponse = await response.json();
+
         if (response.status !== 200) {
-            alert(response.json())
+            alert(jsonResponse);
         } else {
-            location.reload();
+
+            if (method === "POST")
+                location.assign(jsonResponse['item_link'])
+            else
+                location.reload();
         }
+
 
         return await response.json();
     } catch (e) {
