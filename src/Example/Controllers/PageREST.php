@@ -1,7 +1,8 @@
 <?php
 
-namespace HummNGIN\Controllers\Api;
+namespace Example\Controllers;
 
+use HummNGIN\Controllers\Api\DefaultRESTController;
 use HummNGIN\Repository\DynamicRepository;
 
 class PageREST extends DefaultRESTController

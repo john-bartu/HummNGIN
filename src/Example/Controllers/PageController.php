@@ -1,8 +1,9 @@
 <?php
 
-namespace HummNGIN\Controllers;
+namespace Example\Controllers;
 
 
+use HummNGIN\Controllers\AppController;
 use HummNGIN\Core\Http\Response;
 use HummNGIN\Repository\DynamicRepository;
 

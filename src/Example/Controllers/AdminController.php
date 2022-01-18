@@ -1,6 +1,6 @@
 <?php
 
-namespace HummNGIN\Controllers\Admin;
+namespace Example\Controllers;
 
 use HummNGIN\Controllers\AppController;
 use HummNGIN\Core\Http\Response;

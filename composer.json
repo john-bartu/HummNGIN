@@ -2,6 +2,7 @@
     "autoload": {
         "psr-4": {
             "HummNGIN\\": "src/HummNGIN/",
+            "Example\\": "src/Example/",
             "eftec\\": "lib/eftec/"
         }
     },

@@ -2,9 +2,9 @@
 
 require "../vendor/autoload.php";
 
-use HummNGIN\Controllers\Admin\AdminController;
-use HummNGIN\Controllers\Admin\AdminPageController;
-use HummNGIN\Controllers\Api\PageREST;
+use Example\Controllers\AdminController;
+use Example\Controllers\AdminPageController;
+use Example\Controllers\PageREST;
 use HummNGIN\Controllers\DebugController;
 use HummNGIN\Controllers\DefaultController;
 use HummNGIN\Controllers\SecurityController;
