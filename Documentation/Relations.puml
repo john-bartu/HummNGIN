@@ -1,0 +1,51 @@
+@startuml
+
+
+DefaultRESTController --> AppController
+DefaultRESTController o-- DynamicRepository
+DefaultRESTController o-- Request
+
+AppController o-- Response
+
+SecurityController o-u- UserRepository
+SecurityController ...> Auth : "Uses"
+SecurityController o- RedirectResponse
+
+CallbackEndpoint o--- IGuard
+CallbackEndpoint o--- Request
+
+ClassEndpoint -u- IGuard
+ClassEndpoint -- Request
+
+' CallbackEndpoint -[hidden]u- ClassEndpoint
+
+Response o-- Header
+
+RedirectResponse -- AppController
+
+Request o-- Header
+
+Router *--- IEndpoint
+Router o-- AppController
+Router *-- RouterPathGenerator
+
+Session o-u- User
+
+Auth .. Session
+
+Kernel *-- Router
+Kernel o- Request
+Kernel --- AppController
+Kernel -u- Debug
+
+
+Session -r-- AuthGuard
+Session -d-- AuthenticateGuard
+
+
+BaseRepository o- Database
+
+AppController .. ArrayUtil
+AppController ... FormBuilder
+
+@enduml

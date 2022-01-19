@@ -1,0 +1,378 @@
+@startuml
+
+!theme plain
+
+package Controller{
+   package Api{
+      interface IRESTController{
+         + post(Request $request): Response
+         + get(Request $request): Response
+         + put(Request $request): Response
+         + delete(Request $request): Response
+      }
+
+      class DefaultRESTController{
+         + handle(Request $request): Response
+      }
+
+
+
+      DefaultRESTController ..> IRESTController
+   }
+
+   class AppController{
+      + error() : Error
+      + render() : ?Responses
+   }
+
+   class DebugController{
+      + debug() : ?Response
+   }
+
+   class SecurityController{
+      + login() : ?Response
+      + register() : ?Response
+      + logout() : ?Response
+   }
+
+   DebugController --> AppController
+   SecurityController --> AppController
+}
+
+package Core{
+   package Endpoint{
+      interface IEndpoint{
+         + handle(Request|null $request)
+         + match(string $path, string $method)
+         + getPath()
+         + getMethods(): array;
+         + hasVariables(): bool
+         + getVariablesNames() : mixed
+      }
+      class CallbackEndpoint{
+         + __construct(string $name, string $path, callable $callback, array $methods)
+         {static} + trimPath(string $path): string
+      }
+      class ClassEndpoint{
+         + __construct(string $name, string $path, array $parameters, array $methods)
+      }
+      class RedirectEndpoint{}
+
+
+      IEndpoint <-- CallbackEndpoint
+      ClassEndpoint --> IEndpoint
+      RedirectEndpoint --> IEndpoint
+   }
+
+   package Headers{
+      class Header{
+         - $header:array
+         + __construct(array $headers = [])
+         + set(string $key, $values, bool $replace = true)
+         + get(string $key = null)
+         + allHeaders(): array
+         + headersWithoutCookies(): array
+      }
+      class ResponseHeader{
+         + __construct(array $headers = [])
+         - initDate(): void
+         + setExpires($date = null)
+      }
+
+      ResponseHeader->Header
+   }
+
+   package Http{
+      interface IResponse{
+         + send(): object;
+      }
+      class Response{
+         + __construct(string $content, int $status, array $headers)
+         + setContent(?string $content): Response
+         + setStatusCode(int $code, string $text): Response
+         + isInvalid(): bool
+         + setProtocolVersion(string $version): Response
+         + sendHeaders(): Response
+         + sendContent(): Response
+      }
+      class RedirectResponse{
+         + __construct(string $url, int $status, array $headers)
+      }
+      class JSONResponse{
+         + __construct(string $content, int $status, array $headers)
+      }
+      class Request{
+         + __construct()
+         + getUri(): string
+         + getMethod(): string
+         + &GET(): Package
+         + &SERVER(): Package
+         + &POST(): Package
+         + &COOKIE(): Package
+         + &FILES(): Package
+         + &JSON(): Package
+      }
+
+      Response --> IResponse
+      RedirectResponse --> Response
+      JSONResponse --> Response
+
+   }
+
+   package Router{
+      interface IRouter{
+         + handle(Request $request): Response;
+         + generateUrl(string $name, array $parameters): string;
+      }
+      class Router{
+         + &get(string $name, string $path, $method): IEndpoint
+         + &post(string $name, string $path, $method): IEndpoint
+         + &delete(string $name, string $path, $method): IEndpoint
+         + &put(string $name, string $path, $method): IEndpoint
+         + &any(string $name, string $path, $method): IEndpoint
+         + &Register(IEndpoint $endpoint): IEndpoint
+         + &getWithClass(string $name, string $path, string $class, $method): IEndpoint
+         + &anyWithClass(string $name, string $path, string $class, $method): IEndpoint
+         + routingTable(): array
+         + Redirect(string $src_url, string $dest_url)
+         + generateUrl(string $name, array $parameters = []): string
+      }
+
+      Router --> IRouter
+   }
+
+   class Auth{
+      {static} + login(User $user)
+      {static} + logout()
+      {static} + getUser(): User
+      {static} + check():bool
+      {static} + getLoginTime():string
+      {static} + getName():string
+   }
+
+
+   class Kernel{
+      + {static} RegisterRouter(string $class_name)
+      + {static} Handle(Request $request): Response
+      + {static} generateUrl(string $name, array $parameters = []): string
+   }
+   class RouterPathGenerator{
+      + generate(string $name, array $parameters = []): string
+      + resolveUrl(IEndpoint $route, array $parameters): string
+   }
+   class Session{
+      + {static} get(string $key, $default_value = null)
+      + {static} set(string $key, $value)
+      + {static} has(string $key): bool
+      + {static} remove(string $key)
+      + {static} count(): int
+      + {static} getContent(): array
+      + {static} Regenerate()
+      + {static} ensureSessionStarted()
+      + {static} isStarted(): bool
+      + {static} start()
+   }
+
+
+   class Database{
+      + connect(): PDO
+      + prepare(string $query, array $options)
+      + bindParam($value_name, $value)
+      + bindParams(array $key_value)
+      + execute($params = null)
+      + fetch():array
+   }
+
+   package Models{
+
+      class Dynamic{
+         + __construct(string $table_name, mixed $vars)
+         + getTableName(): string
+         + get($name): mixed
+         + set($name, $value)
+         + getVarNames(): array
+         + getValues()
+         + getVars()
+      }
+
+      class User{
+         - $id : int;
+         - $email: string;
+         - $password: string;
+         - $name: string;
+         - $role: int;
+         + __construct(int $id, string $email, string $password, string $name, int $role)
+         + getId(): int
+         + setId(int $id)
+         + getEmail(): string
+         + setEmail(string $email)
+         + getPassword(): string
+         + setPassword(string $password)
+         + getName(): string
+         + setName(string $name)
+         + getRole(): int
+      }
+   }
+}
+
+package Guard{
+   interface IGuard{
+      + hasAccess(): bool;
+      + noAccessResponse(): RedirectResponse;
+   }
+
+   class AuthGuard{
+
+   }
+
+   class AuthenticateGuard{
+      - {static} $roleId:int
+      - {static} hasUserRole(int $role): bool
+
+   }
+
+   class AdminGuard{
+      - {static} $roleId = Role::ADMIN;
+   }
+
+   class Role{
+      + {const} USER = 0;
+      + {const} ADMIN = 1;
+   }
+
+   AuthGuard ..> IGuard
+   AuthenticateGuard -> AuthGuard
+   AuthenticateGuard <-- AdminGuard
+}
+
+
+
+package Repository{
+   class BaseRepository{
+   }
+
+   class DynamicRepository{
+      - $table_name : string
+      - $pdo : PDO
+      + __construct(string $table_name)
+      + getColumnNames($dict)
+      + getTableName(): string
+      + getOne(string $value_name, string $value): ?DynamicModel
+      + insertOne(mixed $data_dict): bool|string
+      + get(string $value_name, string $value, string $order_by, $order): array
+      + updateAt(array $update_dict, int $id)
+      + removeAt(int $id)
+      + join(string $table_name, string $col1_name, $col2_name): ?DynamicModel
+      + joinWhere($table_name, $col1_name, $col2_name, $value_name, $value): ?array
+   }
+
+   class UserRepository{
+      +getUser(string $email): ?User
+      +addUser(string $name, string $email, string $password)
+   }
+
+
+   BaseRepository <-- DynamicRepository
+   BaseRepository <-- UserRepository
+
+}
+
+package Util{
+   package Forms{
+
+      class Form{
+         - $url : string
+         - $method : string
+         + __construct($url = "", $method = "")
+         + Serialize(): array
+         + getUrl(): string
+         + setURL(string $apiUrl): void
+         + getMethod(): string
+         + setMethod(string $method): void
+      }
+
+      interface IFormBuilder{
+         + AddField(string $name, int $type, mixed $value = "");
+         + GetForm(): Form;
+         + SetURL(string $url);
+         + SetMethod(string $url);
+         + Reset();
+      }
+
+      class FormBuilder{
+         + __construct($apiUrl, $method)
+         + SetURL(string $url)
+         + SetMethod(string $method)
+         + AddField(string $name, int $type, mixed $value = "")
+         + SetValue(string $name, mixed $value = "")
+         + GetForm(): Form
+         + Reset()
+      }
+
+      FormBuilder --> IFormBuilder
+      FormBuilder *-- Form
+   }
+
+   package Validators{
+      interface IValidator{
+         + check($value): bool;
+      }
+
+      class ValidatorBuilder{
+         + check($value): bool
+         + hasAtLeastLowerCaseLetter()
+         + addValidation(string $pattern)
+         + hasAtLeastUpperCaseLetter()
+         + hasAtLeastLetter()
+         + hasAtLeastNumber()
+         + hasAtLeastSymbol()
+         + onlyLetters()
+         + onlyNumbers()
+         + onlyCommonCharacters()
+      }
+
+      class PasswordValidator{
+         + __construct()
+      }
+
+      PasswordValidator ..> IValidator
+   }
+
+   class ArrayUtil{
+      + {static} array_group($array, $key_name): array
+   }
+
+   interface IPackage{
+      + get(string $key, $default_value = null);
+      + set(string $key, $value);
+      + has(string $key): bool;
+      + remove(string $key);
+      + count(): int;
+      + &getContent();
+   }
+
+   class Package{
+      - pack : mixed
+      __construct($mixed)
+   }
+
+   Package --> IPackage
+
+   class Debug{
+      $debug : array
+      isDebugging: bool
+      {static}  DebugStart()
+      {static} GetDebug(): array
+      {static} AdditionalDebug()
+      {static} Debug($key, $value)
+      {static} Database($value
+      {static} isDebugMode(): bool
+      {static} DebugMode(bool $debug)
+   }
+
+}
+
+
+
+!include ./Relations.puml
+@enduml
